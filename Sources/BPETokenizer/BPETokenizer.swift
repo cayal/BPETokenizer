@@ -130,7 +130,7 @@ public class BPETokenizer {
         return Token(tokenId: id, chars: str)
     }
     
-    func tokenize(_ text: String) -> [Token] {
+    public func tokenize(_ text: String) -> [Token] {
         let preTokenized: [String] = preTokenize(text)
         
         var tokenizationGroups: [[Token]] = preTokenized.map({
