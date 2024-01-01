@@ -132,7 +132,7 @@ public class BPETokenizer {
     
     public func unTokenize(_ tokens: [Int32]) -> [String] {
         return tokens.map { tok in
-            config.model.vocab.first(where: { $0.value == tok})?.key ?? "???"
+            config.model.vocab.first(where: { $0.value == tok})?.key.replacingOccurrences(of: "Ġ", with: " ") ?? "???"
         }
     }
     
