@@ -52,10 +52,12 @@ final class BPETokenizerTests: XCTestCase {
     
     func testDecode() throws {
         let simpleTokens = bpe.tokenize(simpleText)
+        print(simpleTokens)
         XCTAssertEqual(simpleTokens.map {$0.chars},
         ["そう", "い", "う", "事", "は", "そ", "ん", "な", "に", "�", "�", "�", "�", "�", "な", "の", "？" ])
         
         let apostroTokens = bpe.tokenize(apostroText)
+        print(apostroTokens)
         XCTAssertEqual(apostroTokens.map {$0.chars},
                        ["You", " must", "'ve", " been", " a", " little", " sure", "'ve",
                        " y", "ers", "elf", " to", " say", " he", "'ll", " do", " that",
@@ -63,6 +65,7 @@ final class BPETokenizerTests: XCTestCase {
 
         
         let funkyTokens = bpe.tokenize(funkyText)
+        print(funkyTokens)
         XCTAssertEqual(funkyTokens.map {$0.chars},
                        ["f", "<", "unk", ">", "y", "|", "sa", "9", "jj", "2", "r", " ", "ロ",
                         "K", " a", "FH", "h", " p", "O", "@", "ロ", "HF", " $", "h", " o", "i",

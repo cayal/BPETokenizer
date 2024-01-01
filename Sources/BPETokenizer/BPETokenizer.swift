@@ -7,7 +7,7 @@ public enum TokenizerError: Error {
     case badMerges, mergeNotInVocab, mergePieceNotInVocab
 }
 
-class BPETokenizer {
+public class BPETokenizer {
     var config: TokenizerConfig
     var specialTokensMap: SpecialTokensMap
     var addPrefixSpace: Bool = false
@@ -93,14 +93,18 @@ class BPETokenizer {
     }
     
     func postProcess(_ tokens: [Token]) -> [Token] {
-        return tokens
+        return tokens.map {
+            Token(tokenId: $0.tokenId,
+                  chars: $0.chars.map({ String(bytes: [charBytes[Character(extendedGraphemeClusterLiteral: $0)]!], encoding: .utf8) ?? "???" }).joined()
+                  )
+        }
     }
     
     func mergeSome(rule queryPair: TokenPair, destination token: Token, upon group: inout [Token]) {
         var i = group.startIndex
-        if group.contains(where: {$0.tokenId == 876}) {
-            print("Debugme")
-        }
+//        if group.contains(where: {$0.tokenId == 876}) {
+//            print("Debugme")
+//        }
         while group.count > 1  {
             guard group.indices.contains(i) else { break }
             // <(•_•<) ==> a, b, c | (a, [b), c] (anterior) [posterior]
@@ -134,7 +138,7 @@ class BPETokenizer {
         })
         
         for queryRule in config.model.mergeRuleParts {
-            print(queryRule)
+//            print(queryRule)
             let queryPair = TokenPair(first: tokenForString(queryRule.0), second: tokenForString(queryRule.1))
             guard let destinationToken = mergeMap[.pair(queryPair)] else { continue }
             for groupIn in tokenizationGroups.indices {
@@ -142,6 +146,6 @@ class BPETokenizer {
             }
         }
         
-        return tokenizationGroups.flatMap({$0})
+        return tokenizationGroups.flatMap(postProcess)
     }
 }
