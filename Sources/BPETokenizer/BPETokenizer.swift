@@ -130,6 +130,12 @@ public class BPETokenizer {
         return Token(tokenId: id, chars: str)
     }
     
+    public func unTokenize(_ tokens: [Int32]) -> [String] {
+        return tokens.map { tok in
+            config.model.vocab.first(where: { $0.value == tok})?.key ?? "???"
+        }
+    }
+    
     public func tokenize(_ text: String) -> [Token] {
         let preTokenized: [String] = preTokenize(text)
         
