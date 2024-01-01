@@ -1,7 +1,7 @@
 import Foundation
 
-public struct Token: Hashable, Decodable  {var tokenId: Int; var chars: String }
-public struct TokenPair: Hashable { var first: Token; var second: Token }
+public struct Token: Hashable, Decodable  { public var tokenId: Int; public var chars: String }
+public struct TokenPair: Hashable { public var first: Token; public var second: Token }
 
 public enum TokenizerError: Error {
     case badMerges, mergeNotInVocab, mergePieceNotInVocab
@@ -49,7 +49,7 @@ public class BPETokenizer {
     enum MergeMapKey: Hashable { case rank(Int); case pair(TokenPair) }
     let mergeMap: [MergeMapKey:Token]
     
-    convenience init(pathToTokenizerConfig: URL, pathToSpecialTokensMap: URL) throws {
+    public convenience init(pathToTokenizerConfig: URL, pathToSpecialTokensMap: URL) throws {
         let specialTokensMapData = try Data(contentsOf:pathToSpecialTokensMap)
         let specialTokensMap = try JSONDecoder().decode(SpecialTokensMap.self, from:specialTokensMapData)
         
@@ -58,7 +58,7 @@ public class BPETokenizer {
         try self.init(config: tokenizerConfig, specialTokensMap: specialTokensMap)
     }
     
-    init(config: TokenizerConfig, specialTokensMap: SpecialTokensMap, addPrefixSpace: Bool = false) throws {
+    public init(config: TokenizerConfig, specialTokensMap: SpecialTokensMap, addPrefixSpace: Bool = false) throws {
         self.config = config
         self.addPrefixSpace = addPrefixSpace
         self.specialTokensMap = specialTokensMap
